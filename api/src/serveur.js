@@ -3,6 +3,8 @@ import { pool } from './bd.js';
 
 const app = express();
 
+app.use(express.json());
+
 // GET /api/cours : la liste de cours
 app.get('/api/cours', async (req, res) => {
     const [cours] = await pool.execute('SELECT id, titre FROM cours');
@@ -52,6 +54,24 @@ app.get('/api/travaux/:id', async (req, res) => {
     res.json(travail);
 });
 
+// Aucune route précédente n'a répondu
+app.use((req, res) => {
+  res.status(404).json({ error: "Route introuvable." });
+});
+// Centralise les erreurs; les quatre paramètres sont nécessaires
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+  console.error(err);
+  const status = Number.isInteger(err.status) ? err.status : 500;
+  const message = status < 500
+    ? "La requête est invalide."
+    : "Erreur interne du serveur.";
+  res.status(status).json({ erreurs: [message] });
+});
+
+// Démarrer le serveur
 app.listen(3000, () => {
     console.log('Serveur démarré sur : http://localhost:3000/api/cours');
 });
