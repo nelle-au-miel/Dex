@@ -30,6 +30,28 @@ app.get('/api/travaux', async (req, res) => {
     res.json(filtres);
 });
 
+// GET /api/travaux/:id : un travail et ses créneaux
+app.get('/api/travaux/:id', async (req, res) => {
+    const [travaux] = await pool.execute(
+        'SELECT * FROM travaux WHERE id = ?',
+        [req.params.id]
+    );
+    // Si aucun travail avec cet ID n'est trouvé : 404
+    if (travaux.length === 0) {
+        return res.status(404).json({ erreurs: ['Travail introuvable.'] });
+    }
+    // Récupérer les créneaux pour ce travail
+    const [creneaux] = await pool.execute(
+        'SELECT * FROM creneaux WHERE travail_id = ?',
+        [req.params.id]
+    );
+    const travail = travaux[0];
+    travail.ouvert = Boolean(travail.ouvert);
+    travail.creneaux = creneaux;
+
+    res.json(travail);
+});
+
 app.listen(3000, () => {
     console.log('Serveur démarré sur : http://localhost:3000/api/cours');
 });
