@@ -1,3 +1,5 @@
+/* -------------------------------- PLAETTE DE COULEUR --------------------------------- */
+
 :root {
     --moka: #3b2a20;
     --brun: #7b5e4a;
@@ -8,61 +10,154 @@
     --mauve: #9164C9;
 }
 
+/* ------------------------------------- GÉNÉRAL --------------------------------------- */
+
 body {
-    font-family: sans-serif;
-    background-color: var(--creme);
-    margin: 0;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    color: var(--moka);
+    background: var(--creme);
 }
+
+[v-cloak] {
+    display: none;
+}
+
+/* ------------------------------------- EN-TÊTE --------------------------------------- */
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: var(--brun);
     font-family: "Chewy", sans-serif;
     letter-spacing: 0.1em;
+    background: var(--brun);
 }
 
+header nav a {
+    margin-left: 1rem;
+}
 header a {
     color: white;
     text-decoration: none;
-    margin-left: 1rem;
 }
 
 header nav a:hover {
-    text-decoration: underline solid white;
+    text-decoration: underline;
 }
 
 header .logo {
     display: flex;
+    align-items: center;
+    gap: 0.6rem;
     font-size: 1.5rem;
     font-weight: bold;
-    margin-left: 0;
-    gap: 0.6rem;
 }
 
 header .logo img {
-    height: 28px;
     display: block;
+    height: 28px;
 }
+
+/* ------------------------------------ CONTENU ---------------------------------------- */
 
 main {
     flex: 1;
+    box-sizing: border-box;
     width: 100%;
     max-width: 900px;
     margin: 2rem auto;
     padding: 0 1rem;
-    box-sizing: border-box;
 }
 
+/* ---------------------------------- PIED DE PAGE ------------------------------------- */
+
 footer {
-    text-align: center;
     padding: 1rem;
-    color: #ddd;
-    border-top: 1px solid #ddd;
-    background-color: var(--moka);
+    text-align: center;
+    color: rgb(194, 194, 194);
+    background: var(--moka);
+    border-top: 5px solid var(--latte);
+}
+
+/* ---------------------------------- PAGE D'ACCUEIL ----------------------------------- */
+
+.filtres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.filtres button {
+    padding: 0.4rem 0.8rem;
+    color: var(--moka);
+    background: white;
+    border: 1px solid var(--latte);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.filtres button.actif {
+    color: white;
+    background: var(--brun);
+    border-color: var(--brun);
+}
+
+.liste {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.carte {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    color: var(--moka);
+    background: white;
+    border: 1px solid var(--latte);
+    border-radius: 10px;
+}
+
+.carte h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+}
+
+.carte a {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-weight: bold;
+    color: var(--brun);
+    text-decoration: none;
+}
+
+.carte:hover {
+    background-color: rgb(248, 243, 240);
+}
+
+.carte a:hover {
+    text-decoration: underline;
+}
+
+.infos {
+    font-size: 0.9rem;
+    color: var(--brun);
+}
+
+.erreur {
+    color: var(--rouge);
+}
+
+/* --------------------------------- FORMAT TÉLÉPHONE ---------------------------------- */
+
+@media (max-width: 600px) {
+    .liste {
+        grid-template-columns: 1fr;
+    }
 }
