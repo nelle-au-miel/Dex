@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import publicRouter from "./routes/public.js";
 import adminRouter from "./routes/admin.js";
 
@@ -6,7 +7,8 @@ import adminRouter from "./routes/admin.js";
 
 const app = express();
 
-app.use(express.json());
+app.use(cors());          // autorise les appels depuis un autre site
+app.use(express.json());  // permet la lecture des corps JSON
 
 app.use(publicRouter);
 app.use(adminRouter);
