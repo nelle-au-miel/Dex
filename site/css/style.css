@@ -154,6 +154,124 @@ footer {
     color: var(--rouge);
 }
 
+
+/* ------------------------------- PAGE D'UN TRAVAIL ------------------------------- */
+
+.entete-travail {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.entete-travail h1 {
+    margin: 0.67em 0;
+}
+
+.entete-travail .cote {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+    margin-top: 1rem;
+}
+
+.entete-travail .type {
+    padding: 0.2rem 0.8rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    color: white;
+    background: var(--mauve);
+    border-radius: 999px;
+}
+
+.entete-travail .remise {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    color: var(--rouge);
+}
+
+.champs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.champs input {
+    display: block;
+    padding: 0.4rem;
+    border: 1px solid var(--latte);
+    border-radius: 6px;
+}
+
+.creneau {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border: 1px solid var(--latte);
+    border-radius: 8px;
+}
+
+.creneau.meilleur {
+    background: #eaf7e8;
+    border-color: var(--vert);
+}
+
+.creneau .nombre {
+    font-weight: bold;
+}
+
+.bouton {
+    padding: 0.5rem 1.2rem;
+    color: white;
+    background: var(--brun);
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.bouton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.succes {
+    color: var(--vert);
+    font-weight: bold;
+}
+
+/* Toutes les dispo */
+
+.reponses-liste {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.reponses {
+    flex: 1 1 200px;
+    padding: 0.6rem 0.8rem;
+    background: white;
+    border: 1px solid var(--latte);
+    border-radius: 8px;
+}
+
+.reponses h3 {
+    margin: 0 0 0.3rem;
+    font-size: 1rem;
+}
+
+.reponses ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+
 /* --------------------------------- FORMAT TÉLÉPHONE ---------------------------------- */
 
 @media (max-width: 600px) {
