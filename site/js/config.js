@@ -1,2 +1,2 @@
-// Adresse de l'API, définie une seule fois
+// Adresse de l'API
 export const API_URL = "http://localhost:3000/api";

@@ -6,7 +6,6 @@ include __DIR__ . "/includes/entete.php";
 <div id="app" v-cloak>
     <h1>Travaux ouverts</h1>
 
-    <!-- Filtre par cours -->
     <div class="filtres">
         <button :class="{ actif: coursChoisi === '' }" @click="choisirCours('')">Tous</button>
         <button
@@ -16,7 +15,6 @@ include __DIR__ . "/includes/entete.php";
             @click="choisirCours(c.id)">{{ c.titre }}</button>
     </div>
 
-    <!-- États : chargement, erreur, liste vide, liste -->
     <p v-if="chargement">Chargement des travaux…</p>
     <p v-else-if="erreur" class="erreur" role="alert">{{ erreur }}</p>
     <p v-else-if="travaux.length === 0">Aucun travail ouvert pour ce cours.</p>
@@ -25,7 +23,7 @@ include __DIR__ . "/includes/entete.php";
             <h2>{{ t.titre }}</h2>
             <p>{{ t.description }}</p>
             <p class="infos">{{ t.type === 'equipe' ? 'En équipe' : 'Individuel' }}</p>
-            <p class="infos">Remise : {{ t.remise }}</p>
+            <p class="infos">Remise : {{ t.remise.slice(0, 16) }}</p>
             <a :href="'travail.php?id=' + t.id">Choisir mes disponibilités</a>
         </article>
     </div>

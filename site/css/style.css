@@ -1,4 +1,4 @@
-/* -------------------------------- PLAETTE DE COULEUR --------------------------------- */
+/* -------------------------------- PALETTE DE COULEUR --------------------------------- */
 
 :root {
     --moka: #3b2a20;
@@ -36,11 +36,13 @@ header {
     font-family: "Chewy", sans-serif;
     letter-spacing: 0.1em;
     background: var(--brun);
+    border-bottom: 5px solid var(--latte);
 }
 
 header nav a {
     margin-left: 1rem;
 }
+
 header a {
     color: white;
     text-decoration: none;
@@ -226,6 +228,16 @@ footer {
     font-weight: bold;
 }
 
+.creneau .actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.creneau .actions .bouton {
+    margin: 0;
+}
+
 .bouton {
     padding: 0.5rem 1.2rem;
     color: white;
@@ -272,7 +284,59 @@ footer {
 }
 
 
-/* --------------------------------- FORMAT TÉLÉPHONE ---------------------------------- */
+/* ---------------------------------- ADMINISTRATION ---------------------------------- */
+
+.entete-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.session {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.formulaire label {
+    display: block;
+}
+
+.formulaire input {
+    display: block;
+    padding: 0.4rem;
+    border: 1px solid var(--latte);
+    border-radius: 6px;
+}
+
+.formulaire textarea,
+.formulaire select {
+    display: block;
+    width: 100%;
+    padding: 0.4rem;
+    box-sizing: border-box;
+    border: 1px solid var(--latte);
+    border-radius: 6px;
+}
+
+.formulaire input[type="checkbox"] {
+    display: inline;
+    padding: 0;
+}
+
+.formulaire .bouton {
+    margin: 0.5rem 0.5rem 0 0;
+}
+
+.section-creneaux {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--latte);
+}
+
+
+/* ----------------------------------- PETIT ÉCRAN ------------------------------------ */
 
 @media (max-width: 600px) {
     .liste {

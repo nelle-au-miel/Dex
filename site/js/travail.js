@@ -1,22 +1,25 @@
 import { createApp, ref, computed, onMounted } from "https://unpkg.com/vue@3.5/dist/vue.esm-browser.js";
 import { lireTravail, lireDisponibilites, enregistrerReponse } from "./api.js";
 
-// L'id du travail, transmis par PHP dans l'attribut data-travail-id
+// L'id du travail
 const travailId = document.getElementById("app").dataset.travailId;
 
 createApp({
     setup() {
         const travail = ref(null);
-        const disponibilites = ref([]);
+        const disponibilites = ref([]);   // pour chaque créneau : nombre d'étudiants et noms
         const matricule = ref("");
         const nom = ref("");
-        const choisis = ref([]);
+        const choisis = ref([]);          // ids des créneaux cochés
         const chargement = ref(true);
-        const erreur = ref("");
-        const erreursForm = ref([]);
+        const erreur = ref("");           // erreur de chargement (ex. travail introuvable)
+        const erreursForm = ref([]);      // erreurs du formulaire
         const succes = ref(false);
 
-        // Ids des créneaux qui conviennent au plus grand nombre (vide si personne n'a répondu)
+        // Les créneaux qui ont au moins une réponse
+        const avecReponses = computed(() => disponibilites.value.filter((d) => d.noms));
+
+        // Ids des créneaux qui ont le plus d'étudiants (vide si personne n'a répondu)
         const meilleurs = computed(() => {
             let max = 0;
             disponibilites.value.forEach((d) => {
@@ -32,59 +35,70 @@ createApp({
                 .map((d) => d.id);
         });
 
-        // Clé localStorage des créneaux choisis par un matricule pour ce travail
-        function cleCreneaux(mat) {
-            return `dex-creneaux-${travailId}-${mat}`;
+        // Nom de la clé localStorage où on garde les créneaux cochés d'un matricule
+        function cleCreneaux(matri) {
+            return `dex-creneaux-${travailId}-${matri}`;
         }
 
-        // Relit matricule, nom et créneaux cochés depuis le navigateur
+        // Remet dans le formulaire le matricule, le nom et les créneaux déjà cochés
         function restaurer() {
             const etudiant = JSON.parse(localStorage.getItem("dex-etudiant"));
-            if (etudiant) {
-                matricule.value = etudiant.matricule;
-                nom.value = etudiant.nom;
-                const sauvegardes = JSON.parse(localStorage.getItem(cleCreneaux(etudiant.matricule)));
-                if (sauvegardes) {
-                    choisis.value = sauvegardes;
-                }
+            if (!etudiant) {
+                return;
+            }
+            matricule.value = etudiant.matricule;
+            nom.value = etudiant.nom;
+
+            const sauvegardes = JSON.parse(localStorage.getItem(cleCreneaux(etudiant.matricule)));
+            if (sauvegardes) {
+                choisis.value = sauvegardes;
             }
         }
 
+        // Envoie la réponse à l'API, et garde l'étudiant dans localStorage
         async function enregistrer() {
             succes.value = false;
             erreursForm.value = [];
 
-            // Sans matricule, l'adresse de la requête serait incomplète
-            if (!matricule.value.trim() || !nom.value.trim()) {
+            const matri = matricule.value.trim();
+            const nomEtudiant = nom.value.trim();
+
+            // Le matricule est dans l'adresse de la requête : il ne peut pas être vide
+            if (!matri || !nomEtudiant) {
                 erreursForm.value = ["Le matricule et le nom sont requis."];
                 return;
             }
 
             try {
-                await enregistrerReponse(travailId, matricule.value.trim(), nom.value.trim(), choisis.value);
+                await enregistrerReponse(travailId, matri, nomEtudiant, choisis.value);
 
-                // Réponse réussie : on garde l'étudiant et ses choix dans le navigateur
-                localStorage.setItem("dex-etudiant", JSON.stringify({
-                    matricule: matricule.value.trim(),
-                    nom: nom.value.trim()
-                }));
-                localStorage.setItem(cleCreneaux(matricule.value.trim()), JSON.stringify(choisis.value));
+                // Réponse réussie : on garde l'étudiant et ses choix pour la prochaine visite
+                localStorage.setItem("dex-etudiant", JSON.stringify({ matricule: matri, nom: nomEtudiant }));
+                localStorage.setItem(cleCreneaux(matri), JSON.stringify(choisis.value));
 
                 succes.value = true;
-                disponibilites.value = await lireDisponibilites(travailId);   // met la grille à jour
+                disponibilites.value = await lireDisponibilites(travailId);   // met les compteurs à jour
             } catch (e) {
-                erreursForm.value = e.messages ?? ["Impossible de joindre l'API."];
+                if (e.messages) {
+                    erreursForm.value = e.messages;
+                } else {
+                    erreursForm.value = ["Impossible de joindre l'API."];
+                }
             }
         }
 
+        // Au chargement de la page : on charge le travail et ses disponibilités
         onMounted(async () => {
             try {
                 travail.value = await lireTravail(travailId);
                 disponibilites.value = await lireDisponibilites(travailId);
                 restaurer();
             } catch (e) {
-                // 404 : le travail n'existe pas (PHP n'a vérifié que le format de l'id)
-                erreur.value = (e.messages ?? ["Impossible de joindre l'API."]).join(" ");
+                if (e.messages) {
+                    erreur.value = e.messages.join(" ");
+                } else {
+                    erreur.value = "Impossible de joindre l'API.";
+                }
             } finally {
                 chargement.value = false;
             }
@@ -92,7 +106,7 @@ createApp({
 
         return {
             travail, disponibilites, matricule, nom, choisis, chargement, erreur,
-            erreursForm, succes, meilleurs, enregistrer
+            erreursForm, succes, meilleurs, avecReponses, enregistrer
         };
     }
 }).mount("#app");

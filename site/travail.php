@@ -56,16 +56,14 @@ include __DIR__ . "/includes/entete.php";
         </form>
 
         <h2>Toutes les disponibilités</h2>
-        <p v-if="!disponibilites.some((d) => d.noms)" class="infos">Personne n'a encore répondu.</p>
+        <p v-if="avecReponses.length === 0" class="infos">Personne n'a encore répondu.</p>
         <div class="reponses-liste">
-            <template v-for="d in disponibilites" :key="d.id">
-                <div v-if="d.noms" class="reponses">
-                    <h3>{{ d.debut.slice(0, 16) }} → {{ d.fin.slice(11, 16) }}</h3>
-                    <ul>
-                        <li v-for="n in d.noms.split(',')" :key="n">{{ n }}</li>
-                    </ul>
-                </div>
-            </template>
+            <div v-for="d in avecReponses" :key="d.id" class="reponses">
+                <h3>{{ d.debut.slice(0, 16) }} → {{ d.fin.slice(11, 16) }}</h3>
+                <ul>
+                    <li v-for="n in d.noms.split(',')" :key="n">{{ n }}</li>
+                </ul>
+            </div>
         </div>
     </template>
 </div>
