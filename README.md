@@ -1,9 +1,8 @@
 # TP2 - Application Dex
 
-Un outil pour permettre aux étudiants de mettre leurs diponibilités pour chaque travaux et aux professeurs de modifier/supprimer ces travaux et leurs créneaux.
+Un outil permettant aux étudiants de mettre leurs diponibilités pour chaque travaux et aux professeurs de modifier/supprimer ces travaux et leurs créneaux.
 
 Il y a trois grandes parties à ce projet...
-
 - une API construite avec Expresss (Node.js) qui communique avec la base de données.
 - un site PHP qui fournit le cadre commun des pages (en-tête, pied de page) et le routage.
 - une interface Vue.js qui affiche les données, gère les interactions utilisateur puis communique avec l'API.
@@ -30,17 +29,17 @@ Un enseignant peut...
 ## Démarrage de l’API
 
 Dans le dossier du projet, ouvrir un terminal et taper...
-### cd dex-ap
-### npm install
-### npm run start
-
-L'API démarre sur http://localhost:3000
+#### cd dex-ap
+#### npm install
+#### npm run start
 
 ## Comptes de démonstration
 
 Il y a deux comptes enseignants :
-### nom                 identifiant         mot de passe
-Claire Dubois       prof                dex2026
-Marc Tremblay       prof2               web2026
+|      Nom       |    ID     |    Mdp    |
+|----------------|-----------|-----------|
+| Claire Dubois  |   prof    |  dex2026  |
+| Marc Tremblay  |   prof2   |  web2026  |
 
-De : Jaynelle Latortue-Raymond
+---
+[JLatortue](https://github.com/nelle-au-miel)
